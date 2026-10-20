@@ -197,6 +197,7 @@ p, li, dd { text-wrap: pretty; }
 
 .svg-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.icon-fill { fill: currentColor; stroke: none; }
 
 .skip-link {
   position: fixed; top: -100px; left: 16px; z-index: 200;
@@ -285,6 +286,7 @@ body.nav-open .topbar {
   border: 1px solid transparent; transition: background .18s, color .18s, border-color .18s;
 }
 .icon-btn:hover { background: var(--surface-3); color: var(--text); border-color: var(--border); }
+.github-btn .icon { width: 19px; height: 19px; }
 .icon-moon { display: none; }
 [data-theme="dark"] .icon-sun { display: none; }
 [data-theme="dark"] .icon-moon { display: block; }

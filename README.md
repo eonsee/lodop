@@ -1,6 +1,21 @@
-# LODOP 技术文档站
+<p align="center">
+  <img src="assets/img/logo.svg" width="88" height="88" alt="LODOP 技术文档站 Logo" />
+</p>
 
-基于《Lodop 技术手册 6.2.2.6》整理的单页技术文档站。参考 Element UI / Ant Design 的视觉语言，风格清新、操作直接，纯静态、零依赖、可离线使用。
+<h1 align="center">LODOP 技术文档站</h1>
+
+<p align="center">
+  基于《Lodop 技术手册 6.2.2.6》整理的单页技术文档站<br />
+  参考 Element UI / Ant Design 的视觉语言，风格清新、操作直接，纯静态、零依赖、可离线使用
+</p>
+
+<p align="center">
+  <a href="https://github.com/eonsee/lodop">GitHub 仓库</a> ·
+  <a href="https://mayekun.com">在线站点</a> ·
+  <a href="https://www.lodop.net">LODOP 官网</a>
+</p>
+
+![LODOP 技术文档站主页截图](assets/img/homepage.png)
 
 ## 使用
 
@@ -69,6 +84,7 @@
 | `Esc` | 清空搜索 / 关闭移动端菜单 |
 | 点击函数行 | 展开或收起该函数详情 |
 | 右上角月亮/太阳 | 切换深色模式（自动记忆） |
+| 右上角 GitHub 图标 | 新标签页打开 [GitHub 仓库](https://github.com/eonsee/lodop) |
 
 ## 目录
 
@@ -78,6 +94,9 @@ site/
 ├─ README.md
 └─ assets/
    ├─ css/main.css      设计系统、布局与响应式
+   ├─ img/
+   │  ├─ logo.svg       站点 Logo（同时用作 favicon）
+   │  └─ homepage.png   README 主页截图
    └─ js/
       ├─ data.js        59 个 API、高阶能力、系统文件、沙盒元素数据
       └─ app.js         搜索、筛选、主题、沙盒、目录联动

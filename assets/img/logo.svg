@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LODOP">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1677ff"/>
+      <stop offset=".6" stop-color="#3aa0ff"/>
+      <stop offset="1" stop-color="#38d3c4"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+  <g fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 24V14h20v10"/>
+    <rect x="16" y="24" width="32" height="16" rx="4"/>
+    <path d="M22 36h20v14H22z"/>
+  </g>
+</svg>
