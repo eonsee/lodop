@@ -1,0 +1,13 @@
+# 依赖与构建产物
+node_modules/
+dist/
+
+# 本地部署与系统文件
+.vercel/
+.DS_Store
+Thumbs.db
+*.log
+
+# 编辑器
+.vscode/
+.idea/

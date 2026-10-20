@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="LODOP WEB 打印控件技术文档 · 6.2.2.6 · 控件参数、功能函数、打印项、样式与排版沙盒" />
+  <meta name="theme-color" content="#1677ff" />
+  <title>LODOP 技术文档 · WEB 打印控件 6.2.2.6</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231677ff'/%3E%3Cpath d='M10 9h12v5H10zM8 15h16v8H8z' fill='white'/%3E%3Crect x='11' y='19' width='10' height='7' rx='1' fill='%231677ff' stroke='white'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <!-- SVG 图标库 -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="svg-sprite" aria-hidden="true">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M19.1 4.9l-1.6 1.6M6.5 17.5l-1.6 1.6"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4.5 12.5 5 5 10-11"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5Z"/><path d="M4 5.5v16"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M13.5 4 10.5 20"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7Z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 7.6 8 9 4.5-1.4 8-4 8-9V6Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z"/><path d="M14 3v6h6"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.7-7.9 6 6 0 0 1 11.4-1.6A4.5 4.5 0 0 1 17.5 18Z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/></symbol>
+    <symbol id="i-paper" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h6M9 16h6"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8ZM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9Z"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8V3h10v5"/><rect x="4" y="8" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></symbol>
+  </svg>
+
+  <!-- 顶部栏 -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="打开目录" aria-expanded="false">
+        <svg class="icon"><use href="#i-menu"/></svg>
+      </button>
+      <a class="brand" href="#overview" aria-label="LODOP 技术文档首页">
+        <span class="brand-mark"><svg class="icon"><use href="#i-print"/></svg></span>
+        <span class="brand-text">LODOP<span class="brand-sub">技术文档</span></span>
+        <span class="brand-ver">v6.2.2.6</span>
+      </a>
+      <nav class="topnav" aria-label="主导航">
+        <a href="#overview">概览</a>
+        <a href="#start">快速开始</a>
+        <a href="#advanced">高阶能力</a>
+        <a href="#api">API 参考</a>
+        <a href="#sandbox">排版沙盒</a>
+      </nav>
+      <div class="topbar-actions">
+        <button class="search-trigger" id="searchTrigger" aria-label="搜索 API">
+          <svg class="icon"><use href="#i-search"/></svg>
+          <span>搜索函数、参数…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <button class="icon-btn" id="themeBtn" aria-label="切换深浅主题" title="切换主题">
+          <svg class="icon icon-sun"><use href="#i-sun"/></svg>
+          <svg class="icon icon-moon"><use href="#i-moon"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- 侧边栏 -->
+    <aside class="sidebar" id="sidebar" aria-label="文档目录">
+      <div class="sidebar-inner">
+        <div class="side-group">
+          <p class="side-title">开始</p>
+          <a class="side-link" href="#overview" data-section="overview"><span class="side-dot"></span>文档概览</a>
+          <a class="side-link" href="#start" data-section="start"><span class="side-dot"></span>系统文件与安装</a>
+          <a class="side-link" href="#quick" data-section="quick"><span class="side-dot"></span>三步开始打印</a>
+          <a class="side-link" href="#params" data-section="params"><span class="side-dot"></span>控件参数</a>
+          <a class="side-link" href="#advanced" data-section="advanced"><span class="side-dot"></span>高阶能力</a>
+        </div>
+        <div class="side-group">
+          <p class="side-title">函数参考</p>
+          <a class="side-link" href="#api" data-section="api"><span class="side-dot"></span>API 总览</a>
+          <div class="side-sub" id="sideCats">
+            <button class="side-cat" data-filter="init">初始化 <span>5</span></button>
+            <button class="side-cat" data-filter="item">打印项 <span>16</span></button>
+            <button class="side-cat" data-filter="output">输出控制 <span>15</span></button>
+            <button class="side-cat" data-filter="style">样式 <span>2</span></button>
+            <button class="side-cat" data-filter="device">打印设备 <span>5</span></button>
+            <button class="side-cat" data-filter="mode">模式设置 <span>3</span></button>
+            <button class="side-cat" data-filter="data">数据与文件 <span>13</span></button>
+            <button class="side-cat side-cat-adv" data-filter="enhanced"><svg class="icon"><use href="#i-spark"/></svg>增强型函数 <span>16</span></button>
+          </div>
+        </div>
+        <div class="side-group">
+          <p class="side-title">工具与附录</p>
+          <a class="side-link" href="#sandbox" data-section="sandbox"><span class="side-dot"></span>排版沙盒</a>
+          <a class="side-link" href="#units" data-section="units"><span class="side-dot"></span>计量单位</a>
+          <a class="side-link" href="#license" data-section="license"><span class="side-dot"></span>注册与维护</a>
+        </div>
+        <div class="side-card">
+          <div class="side-card-head"><svg class="icon"><use href="#i-spark"/></svg><strong>离线可用</strong></div>
+          <p>本页不依赖任何外部资源，双击 <code>index.html</code> 即可使用。</p>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-mask" id="sidebarMask" hidden></div>
+
+    <!-- 主内容 -->
+    <main class="main" id="main">
+      <!-- ============ 概览 ============ -->
+      <section class="section hero-section" id="overview">
+        <div class="hero">
+          <div class="hero-copy">
+            <span class="eyebrow"><span class="pulse"></span>Lodop 6.2.2.6 · 技术手册精编</span>
+            <h1>把网页打印，<br /><span class="grad">做成一件简单的事</span></h1>
+            <p class="hero-desc">LODOP 是一款专业的 WEB 打印控件。3 个控件参数、2 组功能函数，即可完成文本、表格、图片、条码、图表与票据套打。</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#quick">三步开始打印 <svg class="icon"><use href="#i-arrow"/></svg></a>
+              <a class="btn btn-ghost" href="#api">浏览 API 参考</a>
+            </div>
+            <dl class="hero-stats">
+              <div><dt>50+</dt><dd>功能函数</dd></div>
+              <div><dt>15</dt><dd>打印项类型</dd></div>
+              <div><dt>6</dt><dd>计量单位</dd></div>
+              <div><dt>全平台</dt><dd>浏览器支持</dd></div>
+            </dl>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="paper-mock">
+              <div class="pm-head">
+                <span class="pm-logo">L</span>
+                <span class="pm-lines"><i></i><i></i></span>
+              </div>
+              <div class="pm-title"></div>
+              <div class="pm-rows"><i></i><i></i><i></i><i></i></div>
+              <div class="pm-barcode"></div>
+              <span class="pm-stamp">已打印</span>
+            </div>
+            <div class="float-code">
+              <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+              <code>LODOP.ADD_PRINT_HTM(<em>10</em>, <em>10</em>, <em>"100%"</em>, <em>200</em>, html);
+LODOP.PREVIEW();</code>
+            </div>
+            <div class="float-badge"><svg class="icon"><use href="#i-check"/></svg>初始化成功</div>
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span class="feature-icon blue"><svg class="icon"><use href="#i-zap"/></svg></span>
+            <h3>简单易用</h3>
+            <p>三个控件参数与两组功能函数构成核心 API，多数打印任务不到十行代码。</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon teal"><svg class="icon"><use href="#i-layers"/></svg></span>
+            <h3>功能完整</h3>
+            <p>HTML、表格、文本、图片、线条、条码、二维码、图表与 Excel 导出。</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon violet"><svg class="icon"><use href="#i-shield"/></svg></span>
+            <h3>全浏览器</h3>
+            <p>IE 内核使用控件，Chrome / Edge / Firefox 通过 C-Lodop 云打印，一套代码全覆盖。</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon amber"><svg class="icon"><use href="#i-paper"/></svg></span>
+            <h3>布局可控</h3>
+            <p>内置打印预览、打印维护、打印设计三套界面，既可由程序控制，也可交给用户调整。</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============ 系统文件 ============ -->
+      <section class="section" id="start">
+        <div class="section-head">
+          <span class="section-kicker">快速开始 · 01</span>
+          <h2>系统文件与安装</h2>
+          <p>发布包由三个安装文件和一个引导脚本组成。建议页面综合部署：部分浏览器使用控件，其余通过云打印。</p>
+        </div>
+
+        <div class="file-grid" id="fileGrid"><!-- JS 渲染 --></div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h3>安装程序参数</h3>
+            <span class="chip">可选</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>参数</th><th>作用</th><th>示例</th></tr></thead>
+              <tbody>
+                <tr><td><code>-waitXX</code></td><td>安装 / 卸载完成后等待 XX 秒再关闭窗口，0 表示立即关闭</td><td><code>-wait8</code></td></tr>
+                <tr><td><code>-nowindow</code></td><td>静默运行，不显示安装界面</td><td><code>-nowindow</code></td></tr>
+                <tr><td><code>-un</code></td><td>执行卸载操作，优先于文件名</td><td><code>-un</code></td></tr>
+                <tr><td><code>-in</code></td><td>执行安装操作，优先于文件名</td><td><code>-in</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <svg class="icon"><use href="#i-cloud"/></svg>
+          <div>
+            <strong>控件与云打印如何选择？</strong>
+            <p>由 <code>LodopFuncs.js</code> 中的 <code>needCLodop()</code> 根据浏览器 UA 自动判断。新版 Chromium 系列浏览器不再支持 NP 插件，会走 C-Lodop 云打印服务。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 快速开始 ============ -->
+      <section class="section" id="quick">
+        <div class="section-head">
+          <span class="section-kicker">快速开始 · 02</span>
+          <h2>三步开始打印</h2>
+          <p>引入引导脚本 → 获取 LODOP 对象 → 初始化并添加打印项。以下代码可直接放入页面运行。</p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <h3>引入 LodopFuncs.js</h3>
+              <p>把引导脚本作为统一的资源文件部署，所有页面共享一份，便于集中升级。</p>
+              <div class="code-block" data-lang="html">
+                <div class="code-head"><span>index.html</span><button class="copy-btn" data-copy>复制</button></div>
+                <pre><code>&lt;script src="LodopFuncs.js"&gt;&lt;/script&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <h3>嵌入控件并获取对象</h3>
+              <p>只保留 <code>getLodop</code> 一行，控件类型、安装检测与版本升级都交给引导脚本。</p>
+              <div class="code-block" data-lang="html">
+                <div class="code-head"><span>index.html</span><button class="copy-btn" data-copy>复制</button></div>
+                <pre><code>&lt;object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width="0" height="0"&gt;
+  &lt;embed id="LODOP_EM" type="application/x-print-lodop" width="0" height="0"&gt;
+&lt;/object&gt;
+&lt;script&gt;
+  var LODOP = getLodop(
+    document.getElementById('LODOP_OB'),
+    document.getElementById('LODOP_EM')
+  );
+&lt;/script&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <h3>初始化、添加内容、预览</h3>
+              <p>一个完整的打印事务：设置任务名和纸张 → 添加打印项 → 预览或打印。</p>
+              <div class="code-block" data-lang="javascript">
+                <div class="code-head"><span>print.js</span><button class="copy-btn" data-copy>复制</button></div>
+                <pre><code>// 1. 初始化（任务名可为空）
+LODOP.PRINT_INIT("订单系统_销售单");
+
+// 2. 设置纸张：A4 纵向
+LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4");
+
+// 3. 添加打印项
+LODOP.ADD_PRINT_TEXT(20, 20, 300, 28, "销售出库单");
+LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+LODOP.SET_PRINT_STYLEA(0, "Bold", 1);
+
+LODOP.ADD_PRINT_TABLE(80, 20, "100%", 300,
+  "&lt;table border='1'&gt;&lt;tr&gt;&lt;td&gt;商品&lt;/td&gt;&lt;td&gt;数量&lt;/td&gt;&lt;/tr&gt;" +
+  "&lt;tr&gt;&lt;td&gt;打印纸&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;");
+
+// 4. 预览或直接打印
+LODOP.PREVIEW();</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <svg class="icon"><use href="#i-shield"/></svg>
+          <div>
+            <strong>关于直接打印</strong>
+            <p><code>PRINT()</code>、<code>PRINTA()</code>、<code>PRINTB()</code> 与 Excel 导出属于注册功能；未注册时仍可使用，但输出左下角会出现“本页由【试用版打印控件】输出”的水印。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 控件参数 ============ -->
+      <section class="section" id="params">
+        <div class="section-head">
+          <span class="section-kicker">参考 · 控件参数</span>
+          <h2>三个控件参数</h2>
+          <p>以页面 <code>object</code> 元素的 <code>param</code> 形式使用。控件默认宽高为 0 时完全隐藏。</p>
+        </div>
+
+        <div class="param-grid">
+          <article class="param-card">
+            <div class="param-top"><span class="param-tag">Caption</span><span class="param-kind">显示标题</span></div>
+            <p>设置控件的显示标题。希望预览或设计界面内嵌到网页时，用它标识控件位置。</p>
+            <div class="code-inline">&lt;param name="Caption" value="我是打印控件lodop"&gt;</div>
+          </article>
+          <article class="param-card">
+            <div class="param-top"><span class="param-tag">Color</span><span class="param-kind">区域颜色</span></div>
+            <p>设置控件显示区域的底色，支持 #十六进制、RGB 十进制或英文颜色名，便于融入页面。</p>
+            <div class="code-inline">&lt;param name="Color" value="#C0C0C0"&gt;</div>
+          </article>
+          <article class="param-card">
+            <div class="param-top"><span class="param-tag">Border</span><span class="param-kind">区域边界</span></div>
+            <p>设置显示区域是否有边界。1 为有边界，其它值无边界。</p>
+            <div class="code-inline">&lt;param name="Border" value="1"&gt;</div>
+          </article>
+        </div>
+
+        <div class="code-block" data-lang="html">
+          <div class="code-head"><span>嵌入示例：把预览界面内嵌进页面</span><button class="copy-btn" data-copy>复制</button></div>
+          <pre><code>&lt;object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA"
+        width="800" height="600"&gt;
+  &lt;param name="Caption" value="打印预览"&gt;
+  &lt;param name="Color" value="#f7f9fc"&gt;
+  &lt;param name="Border" value="1"&gt;
+  &lt;embed id="LODOP_EM" type="application/x-print-lodop" width="800" height="600"&gt;
+&lt;/object&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- ============ 高阶能力 ============ -->
+      <section class="section" id="advanced">
+        <div class="section-head">
+          <span class="section-kicker">进阶 · 高杠杆能力</span>
+          <h2>别只逐项排版，这些函数更强</h2>
+          <p>设计器、跨页表格、模板复用、文件导出、设备直写——6 组能力覆盖复杂打印场景。点击条目直接定位到对应函数并展开。</p>
+        </div>
+
+        <div class="adv-grid" id="advGrid"><!-- JS 渲染 --></div>
+
+        <div class="adv-strip">
+          <div class="adv-strip-copy">
+            <span class="adv-strip-icon"><svg class="icon"><use href="#i-spark"/></svg></span>
+            <div>
+              <strong>16 个增强型函数已在列表中标注</strong>
+              <p>如 PRINT_INITA、ADD_PRINT_HTML、PREVIEWA、SAVE_TO_FILE，名称旁带「增强」徽标，也可一键筛选。</p>
+            </div>
+          </div>
+          <button class="btn btn-ghost" id="advFilterBtn">只看增强型<svg class="icon"><use href="#i-arrow"/></svg></button>
+        </div>
+      </section>
+
+      <!-- ============ API 参考 ============ -->
+      <section class="section" id="api">
+        <div class="section-head">
+          <span class="section-kicker">参考 · 函数库</span>
+          <h2>API 参考</h2>
+          <p>按用途浏览，或直接搜索函数名与中文说明。点击行展开参数、返回值与示例。</p>
+        </div>
+
+        <div class="api-toolbar" id="apiToolbar">
+          <div class="api-search">
+            <svg class="icon"><use href="#i-search"/></svg>
+            <input id="apiSearch" type="search" placeholder="搜索函数名、中文名或参数…" autocomplete="off" spellcheck="false" aria-label="搜索 API" />
+            <kbd class="search-kbd">/</kbd>
+            <button class="search-clear" id="searchClear" aria-label="清空搜索" hidden>
+              <svg class="icon"><use href="#i-close"/></svg>
+            </button>
+          </div>
+          <div class="filter-chips" id="filterChips" role="tablist" aria-label="按类别筛选">
+            <!-- JS 渲染 -->
+          </div>
+          <div class="api-meta">
+            <span id="apiCount">共 59 个函数</span>
+            <button class="text-btn" id="expandAllBtn">全部展开</button>
+          </div>
+        </div>
+
+        <div class="api-list" id="apiList" aria-live="polite"><!-- JS 渲染 --></div>
+        <div class="empty-state" id="apiEmpty" hidden>
+          <svg class="icon"><use href="#i-search"/></svg>
+          <h3>没有找到匹配的函数</h3>
+          <p>试试更短的关键词，或切换到“全部”类别。</p>
+          <button class="btn btn-ghost" id="resetSearch">清除筛选</button>
+        </div>
+      </section>
+
+      <!-- ============ 排版沙盒 ============ -->
+      <section class="section" id="sandbox">
+        <div class="section-head">
+          <span class="section-kicker">工具 · 可视化</span>
+          <h2>排版沙盒</h2>
+          <p>勾选元素，左侧纸张实时呈现，右侧同步生成对应的 LODOP 语句。用最直观的方式理解坐标与打印项。</p>
+        </div>
+
+        <div class="sandbox">
+          <div class="sandbox-side">
+            <div class="sandbox-panel">
+              <h3>纸张</h3>
+              <div class="segmented" id="paperSwitch" role="group" aria-label="纸张类型">
+                <button class="seg-btn active" data-paper="a4">A4 单据</button>
+                <button class="seg-btn" data-paper="ticket">小票 80mm</button>
+              </div>
+            </div>
+            <div class="sandbox-panel">
+              <h3>打印元素</h3>
+              <div class="toggle-list" id="toggleList"><!-- JS 渲染 --></div>
+            </div>
+            <div class="callout tip compact">
+              <svg class="icon"><use href="#i-spark"/></svg>
+              <div><p>坐标单位默认是 px（1/96 英寸）。也可写成 <code>"10mm"</code>、<code>"50%"</code> 等带单位的值。</p></div>
+            </div>
+          </div>
+
+          <div class="sandbox-stage">
+            <div class="paper-wrap" id="paperWrap">
+              <div class="paper" id="paper" data-paper="a4">
+                <div class="pp-title" data-el="title">
+                  <strong>杭州云帆科技有限公司</strong>
+                  <span>销售出库单</span>
+                </div>
+                <div class="pp-meta" data-el="meta">
+                  <span>客户：上海示例贸易有限公司</span>
+                  <span>单号：SO-2026-1020</span>
+                  <span>日期：2026-10-20</span>
+                  <span>制单：李四</span>
+                </div>
+                <table class="pp-table" data-el="table">
+                  <thead><tr><th>商品名称</th><th>规格</th><th>数量</th><th>金额</th></tr></thead>
+                  <tbody>
+                    <tr><td>A4 打印纸</td><td>80g</td><td>20</td><td>560.00</td></tr>
+                    <tr><td>热敏标签纸</td><td>60×40</td><td>10</td><td>280.00</td></tr>
+                  </tbody>
+                </table>
+                <div class="pp-total" data-el="total"><span>合计金额（大写）：捌佰肆拾元整</span><strong>￥840.00</strong></div>
+                <div class="pp-sign" data-el="footer"><span>收货人：__________</span><span>审核：__________</span></div>
+                <div class="pp-barcode" data-el="barcode"><i></i></div>
+                <div class="pp-qr" data-el="qrcode"></div>
+                <div class="pp-seal" data-el="seal"><span>财务专用章</span></div>
+                <div class="pp-footer" data-el="footer">第 1 页 / 共 1 页</div>
+              </div>
+            </div>
+            <p class="paper-caption" id="paperCaption">A4 · 210 × 297 mm · 纵向</p>
+          </div>
+
+          <div class="sandbox-code">
+            <div class="code-block tall">
+              <div class="code-head">
+                <span><svg class="icon"><use href="#i-terminal"/></svg> 生成的代码</span>
+                <button class="copy-btn" data-copy="#sandboxCode">复制</button>
+              </div>
+              <pre><code id="sandboxCode"></code></pre>
+            </div>
+            <p class="code-note">代码仅作演示，实际页面需先获取 <code>LODOP</code> 对象。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 计量单位 ============ -->
+      <section class="section" id="units">
+        <div class="section-head">
+          <span class="section-kicker">附录 · A</span>
+          <h2>计量单位</h2>
+          <p>所有位置与尺寸参数都支持整数（默认 px）或带单位的字符串。px 是固定换算单位，不受屏幕显示影响。</p>
+        </div>
+
+        <div class="unit-grid">
+          <div class="unit-card">
+            <span class="unit-key">1 in</span>
+            <span class="unit-eq">英寸</span>
+            <span class="unit-val">2.54 cm</span>
+          </div>
+          <div class="unit-card">
+            <span class="unit-key">1 in</span>
+            <span class="unit-eq">英寸</span>
+            <span class="unit-val">25.4 mm</span>
+          </div>
+          <div class="unit-card">
+            <span class="unit-key">1 in</span>
+            <span class="unit-eq">英寸</span>
+            <span class="unit-val">72 pt</span>
+          </div>
+          <div class="unit-card accent">
+            <span class="unit-key">1 in</span>
+            <span class="unit-eq">英寸</span>
+            <span class="unit-val">96 px</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>书写规则</h3></div>
+          <ul class="rule-list">
+            <li><span class="rule-badge">整数</span><span class="rule-text">默认长度为 <code>px</code>；但 <code>SET_PRINT_PAGESIZE</code> 的宽高默认是 <code>0.1mm</code>（45 表示 4.5mm）。</span></li>
+            <li><span class="rule-badge">字符串</span><span class="rule-text">可带 <code>in</code>、<code>cm</code>、<code>mm</code>、<code>pt</code>、<code>px</code>、<code>%</code>，如 <code>"10mm"</code>。</span></li>
+            <li><span class="rule-badge">百分比</span><span class="rule-text">上下边距与高度相对纸张高度；左右边距与宽度相对纸张宽度（横向打印时互换）。</span></li>
+            <li><span class="rule-badge">转义</span><span class="rule-text">Width 可写 <code>RightMargin:0.9cm</code>，Height 可写 <code>BottomMargin:9mm</code>，从纸张另一侧定位。</span></li>
+          </ul>
+        </div>
+
+        <div class="code-block" data-lang="javascript">
+          <div class="code-head"><span>等价写法</span><button class="copy-btn" data-copy>复制</button></div>
+          <pre><code>LODOP.ADD_PRINT_TEXT(11, 23, 98, 19, "单位 px");
+LODOP.ADD_PRINT_TEXT("2.9mm", "6.1mm", "25.9mm", "5mm", "单位 mm");
+LODOP.ADD_PRINT_TEXT("5%", "3%", "40%", "10%", "百分比");</code></pre>
+        </div>
+      </section>
+
+      <!-- ============ 注册与维护 ============ -->
+      <section class="section" id="license">
+        <div class="section-head">
+          <span class="section-kicker">附录 · B</span>
+          <h2>注册与维护</h2>
+          <p>公开发行版没有功能限制，多数用户可以免费长期使用。仅少数功能需要注册。</p>
+        </div>
+
+        <div class="license-grid">
+          <div class="license-card">
+            <div class="license-head"><span class="license-badge free">免费</span><h3>无需注册</h3></div>
+            <ul class="check-list">
+              <li><svg class="icon"><use href="#i-check"/></svg>打印预览与打印维护</li>
+              <li><svg class="icon"><use href="#i-check"/></svg>全部打印项与样式设置</li>
+              <li><svg class="icon"><use href="#i-check"/></svg>条码、二维码、图表</li>
+              <li><svg class="icon"><use href="#i-check"/></svg>打印设计界面</li>
+            </ul>
+          </div>
+          <div class="license-card">
+            <div class="license-head"><span class="license-badge paid">需注册</span><h3>商业功能</h3></div>
+            <ul class="check-list">
+              <li><svg class="icon"><use href="#i-check"/></svg>不经预览的<strong>直接打印</strong></li>
+              <li><svg class="icon"><use href="#i-check"/></svg>导出数据到 <strong>Excel</strong></li>
+              <li><svg class="icon"><use href="#i-check"/></svg>去除输出左下角试用水印</li>
+              <li><svg class="icon"><use href="#i-check"/></svg>部分高级目录与网络功能</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>打印设计常用快捷键</h3><span class="chip">面向开发者</span></div>
+          <div class="shortcut-grid">
+            <div class="shortcut"><kbd>Ctrl</kbd><span>选中多个对象</span></div>
+            <div class="shortcut"><kbd>Ctrl</kbd><kbd>Delete</kbd><span>删除选中对象</span></div>
+            <div class="shortcut"><kbd>Ctrl</kbd><kbd>方向键</kbd><span>微调位置</span></div>
+            <div class="shortcut"><kbd>Ctrl</kbd><kbd>拖动</kbd><span>复制对象</span></div>
+            <div class="shortcut"><kbd>Alt</kbd><kbd>拖动</kbd><span>调整对象顺序</span></div>
+            <div class="shortcut"><kbd>Ctrl</kbd><kbd>滚轮</kbd><span>区域内选中对象</span></div>
+          </div>
+        </div>
+
+        <div class="link-cards">
+          <a class="link-card" href="http://www.c-lodop.com/download.html" target="_blank" rel="noopener noreferrer">
+            <span class="link-icon"><svg class="icon"><use href="#i-download"/></svg></span>
+            <span><strong>官方下载</strong><small>c-lodop.com/download.html</small></span>
+            <svg class="icon ext"><use href="#i-external"/></svg>
+          </a>
+          <a class="link-card" href="https://www.lodop.net/Lodop_Lic.html" target="_blank" rel="noopener noreferrer">
+            <span class="link-icon"><svg class="icon"><use href="#i-shield"/></svg></span>
+            <span><strong>注册与授权</strong><small>lodop.net/Lodop_Lic.html</small></span>
+            <svg class="icon ext"><use href="#i-external"/></svg>
+          </a>
+          <a class="link-card" href="https://www.lodop.net/download.html" target="_blank" rel="noopener noreferrer">
+            <span class="link-icon"><svg class="icon"><use href="#i-book"/></svg></span>
+            <span><strong>样例与手册</strong><small>lodop.net/download.html</small></span>
+            <svg class="icon ext"><use href="#i-external"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-notice">
+          <svg class="icon"><use href="#i-shield"/></svg>
+          <p><strong>声明：</strong>本站内容基于官方资料进行整理，仅用于个人学习和参考，若有侵权请联系 <a href="mailto:2532615203@qq.com">2532615203@qq.com</a> 进行下架处理。</p>
+        </div>
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <span class="brand-mark small"><svg class="icon"><use href="#i-print"/></svg></span>
+            <div><strong>LODOP 技术文档</strong><p>基于《WEB打印控件Lodop技术手册 6.2.2.6》整理</p></div>
+          </div>
+          <div class="footer-meta">
+            <span>mayekun.com</span>
+            <span class="dot-sep">·</span>
+            <span>文档版本 6.2.2.6</span>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- 右侧页内目录 -->
+    <aside class="toc" id="toc" aria-label="页内导航">
+      <p class="toc-title">本页目录</p>
+      <nav id="tocNav"><!-- JS 渲染 --></nav>
+      <button class="back-top" id="backTop" aria-label="回到顶部"><svg class="icon"><use href="#i-chev"/></svg></button>
+    </aside>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
