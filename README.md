@@ -15,6 +15,12 @@
   <a href="https://www.lodop.net">LODOP 官网</a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/eonsee/lodop/stargazers">
+    <img src="https://img.shields.io/github/stars/eonsee/lodop?style=flat-square&logo=github&label=Stars" alt="GitHub Stars" />
+  </a>
+</p>
+
 ![LODOP 技术文档站主页截图](assets/img/homepage.png)
 
 ## 使用
@@ -105,6 +111,12 @@ site/
 ## 兼容性
 
 面向现代浏览器（Chrome / Edge / Firefox / Safari）。文档站本身是静态页面；实际打印需要目标机器安装 LODOP 控件。
+
+## Star 趋势
+
+<a href="https://star-history.com/#eonsee/lodop&Date">
+  <img src="https://api.star-history.com/svg?repos=eonsee/lodop&type=Date" alt="Star 趋势图" />
+</a>
 
 ## 声明
 
